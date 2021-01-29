@@ -58,7 +58,31 @@ while True:
             exit()
     #шаблон
     sc.blit(img, (0, 0))
-    [pygame.draw.rect(sc, color_list_level_1[color], block) for color, block in enumerate(block_list_level_1)]
+    if block_list_level_1:
+        [pygame.draw.rect(sc, color_list_level_1[color], block) for color, block in enumerate(block_list_level_1)]
+        hit_index = ball.collidelist(block_list_level_1)
+        if hit_index != -1:
+            hit_rect = block_list_level_1.pop(hit_index)
+            hit_color = color_list_level_1.pop(hit_index)
+            dx, dy = detect_collusion(dx, dy, ball, hit_rect)
+    if not block_list_level_1:
+        paddle_width = 235
+        [pygame.draw.rect(sc, color_list_level_2[color], block) for color, block in enumerate(block_list_level_2)]
+        hit_index = ball.collidelist(block_list_level_2)
+        if hit_index != -1:
+            hit_rect = block_list_level_2.pop(hit_index)
+            hit_color = color_list_level_2.pop(hit_index)
+            dx, dy = detect_collusion(dx, dy, ball, hit_rect)
+        FPS = 80
+    if not block_list_level_2:
+        paddle_width = 200
+        [pygame.draw.rect(sc, color_list_level_3[color], block) for color, block in enumerate(block_list_level_3)]
+        hit_index = ball.collidelist(block_list_level_3)
+        if hit_index != -1:
+            hit_rect = block_list_level_3.pop(hit_index)
+            hit_color = color_list_level_3.pop(hit_index)
+            dx, dy = detect_collusion(dx, dy, ball, hit_rect)
+        FPS = 100
     pygame.draw.rect(sc, (255, 0, 255), paddle)
     pygame.draw.circle(sc, (255, 255, 255), ball.center, ball_radius)
         #движение шарика
@@ -90,8 +114,6 @@ while True:
         paddle.left -= paddle_speed
     if key[pygame.K_RIGHT] and paddle.right < WIDTH:
         paddle.right += paddle_speed
-
-
 
     pygame.display.flip()
     clock.tick(FPS)
